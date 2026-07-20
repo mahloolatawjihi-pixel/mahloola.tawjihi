@@ -7,11 +7,10 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// تهيئة Gemini باستخدام المفتاح الموجود في Render (تأكد أن اسمه GEMINI_API_KEY)
+// تهيئة Gemini
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-// health check
 app.get('/', (req, res) => {
     res.send('سيرفر سند (Gemini) شغال ✅');
 });
@@ -28,22 +27,31 @@ app.post('/api/chat', async (req, res) => {
 مهمتك مساعدة الطالب بمادة: ${subject}.
 القواعد: أجب بلهجة أردنية بسيطة وودودة، بشكل مختصر ومركز، وركز فقط على سؤال الطالب.`;
 
-        // تحويل التاريخ (History) لتنسيق Gemini
-        const chat = model.startChat({
-            history: history.slice(-8).map(m => ({
+        // تنظيف وتجهيز التاريخ لـ Gemini
+        const formattedHistory = history
+            .filter(m => m.role === 'user' || m.role === 'assistant')
+            .map(m => ({
                 role: m.role === 'user' ? 'user' : 'model',
                 parts: [{ text: m.content }],
-            })),
+            }));
+
+        // التأكد من أن التاريخ لا يبدأ برسالة من الموديل (شرط Gemini)
+        const validHistory = (formattedHistory.length > 0 && formattedHistory[0].role === 'model')
+            ? formattedHistory.slice(1)
+            : formattedHistory;
+
+        const chat = model.startChat({
+            history: validHistory,
             generationConfig: {
                 maxOutputTokens: 500,
                 temperature: 0.7,
             },
         });
 
-        // دمج التعليمات مع السؤال
-        const fullPrompt = `${systemInstruction}\n\nسؤال الطالب: ${question}`;
+        // دمج التعليمات مع السؤال الأول (أو إرساله عبر التعليمات)
+        const finalPrompt = `${systemInstruction}\n\nسؤال الطالب: ${question}`;
 
-        const result = await chat.sendMessage(fullPrompt);
+        const result = await chat.sendMessage(finalPrompt);
         const response = await result.response;
         const reply = response.text() || 'عذرًا، لم أستطع الرد الآن.';
 
