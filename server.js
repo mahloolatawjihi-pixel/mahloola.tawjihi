@@ -9,7 +9,7 @@ app.use(express.json());
 
 // تهيئة Gemini
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
+const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 app.get('/', (req, res) => {
     res.send('سيرفر سند (Gemini) شغال ✅');
 });
