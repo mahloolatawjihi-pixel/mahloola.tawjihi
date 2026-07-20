@@ -4,8 +4,8 @@
   "description": "",
   "main": "sanad.js",
   "scripts": {
-  "start": "node server.js"
-},
+    "start": "node server.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/mahloolatawjihi-pixel/mahloola.tawjihi.git"
@@ -13,7 +13,7 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
+  "type": "module",
   "bugs": {
     "url": "https://github.com/mahloolatawjihi-pixel/mahloola.tawjihi/issues"
   },
