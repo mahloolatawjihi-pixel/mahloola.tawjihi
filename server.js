@@ -3,7 +3,6 @@ const express = require('express');
 const cors = require('cors');
 const { HfInference } = require('@huggingface/inference');
 
-// تعريف الـ app لازم يكون هون، أول شيء بعد استدعاء المكتبات
 const app = express(); 
 
 app.use(cors());
@@ -28,16 +27,15 @@ app.post('/api/chat', async (req, res) => {
         
         سؤال الطالب الحالي: ${question}`;
 
-        const result = await hf.textGeneration({
+        // التعديل هنا: استخدام chatCompletion بدلاً من textGeneration لضمان التوافق
+        const result = await hf.chatCompletion({
             model: 'mistralai/Mistral-7B-Instruct-v0.2',
-            inputs: prompt,
-            parameters: {
-                max_new_tokens: 500,
-                temperature: 0.7
-            }
+            messages: [{ role: 'user', content: prompt }],
+            max_tokens: 500,
+            temperature: 0.7
         });
 
-        res.json({ reply: result.generated_text });
+        res.json({ reply: result.choices[0].message.content });
 
     } catch (error) {
         console.error("خطأ في السيرفر:", error);
