@@ -639,6 +639,37 @@
       color: var(--text-2);
     }
 
+    /* ---------- subject card link wrapper (opens exams/summaries page) ---------- */
+    .subj-card-link {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+      cursor: pointer;
+    }
+
+    .subj-card-link .subj-card {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .subj-card-link .subj-more {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 12px;
+      font-size: .74rem;
+      font-weight: 700;
+      color: var(--blue);
+      opacity: 0;
+      transform: translateY(4px);
+      transition: opacity .25s, transform .25s;
+    }
+
+    .subj-card-link:hover .subj-more {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
     /* ---------- footer ---------- */
     footer {
       padding: 70px 0 40px;
@@ -881,26 +912,38 @@
       </div>
 
       <div class="subjects-grid">
-        <div class="subj-card glass reveal">
-          <div class="subj-ic">📖</div>
-          <h4>اللغة العربية</h4>
-          <p>نصوص، قواعد، وتعبير</p>
-        </div>
-        <div class="subj-card glass reveal">
-          <div class="subj-ic">➗</div>
-          <h4>الرياضيات</h4>
-          <p>جبر، هندسة، وتفاضل</p>
-        </div>
-        <div class="subj-card glass reveal">
-          <div class="subj-ic">🏛️</div>
-          <h4>تاريخ الأردن</h4>
-          <p>أحداث وتواريخ مركزة</p>
-        </div>
-        <div class="subj-card glass reveal">
-          <div class="subj-ic">🕌</div>
-          <h4>التربية الإسلامية</h4>
-          <p>فقه، وتفسير، وسيرة</p>
-        </div>
+        <a class="subj-card-link" href="subject.html?s=عربي">
+          <div class="subj-card glass reveal">
+            <div class="subj-ic">📖</div>
+            <h4>اللغة العربية</h4>
+            <p>نصوص، قواعد، وتعبير</p>
+            <div class="subj-more">شوف الامتحانات والتلخيصات ←</div>
+          </div>
+        </a>
+        <a class="subj-card-link" href="subject.html?s=رياضيات">
+          <div class="subj-card glass reveal">
+            <div class="subj-ic">➗</div>
+            <h4>الرياضيات</h4>
+            <p>جبر، هندسة، وتفاضل</p>
+            <div class="subj-more">شوف الامتحانات والتلخيصات ←</div>
+          </div>
+        </a>
+        <a class="subj-card-link" href="subject.html?s=تاريخ_الاردن">
+          <div class="subj-card glass reveal">
+            <div class="subj-ic">🏛️</div>
+            <h4>تاريخ الأردن</h4>
+            <p>أحداث وتواريخ مركزة</p>
+            <div class="subj-more">شوف الامتحانات والتلخيصات ←</div>
+          </div>
+        </a>
+        <a class="subj-card-link" href="subject.html?s=تربية_اسلامية">
+          <div class="subj-card glass reveal">
+            <div class="subj-ic">🕌</div>
+            <h4>التربية الإسلامية</h4>
+            <p>فقه، وتفسير، وسيرة</p>
+            <div class="subj-more">شوف الامتحانات والتلخيصات ←</div>
+          </div>
+        </a>
       </div>
     </div>
   </section>
