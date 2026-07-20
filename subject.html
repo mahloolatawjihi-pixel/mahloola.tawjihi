@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>المادة | محلولة</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lalezar&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-0:#080a14;
+    --bg-1:#0d1122;
+    --bg-2:#12172b;
+    --violet:#7c5cfc;
+    --blue:#4c8dff;
+    --pink:#ff6b9d;
+    --gold:#ffc65c;
+    --text-0:#f3f4fb;
+    --text-1:#aab0cc;
+    --text-2:#727a9c;
+    --glass-bd:rgba(255,255,255,0.09);
+    --glass-bg:rgba(255,255,255,0.045);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg-0);
+    color:var(--text-0);
+    font-family:'Tajawal', sans-serif;
+    overflow-x:hidden;
+    position:relative;
+    min-height:100vh;
+  }
+
+  .bg-mesh{position:fixed; inset:0; z-index:0; overflow:hidden; pointer-events:none;}
+  .blob{position:absolute; border-radius:50%; filter:blur(90px); opacity:.32; will-change:transform;}
+  .blob-1{width:480px;height:480px; background:radial-gradient(circle, var(--violet), transparent 70%); top:-140px; right:-120px; animation:drift1 22s ease-in-out infinite;}
+  .blob-2{width:420px;height:420px; background:radial-gradient(circle, var(--blue), transparent 70%); bottom:-160px; left:-100px; animation:drift2 26s ease-in-out infinite;}
+  .blob-3{width:340px;height:340px; background:radial-gradient(circle, var(--gold), transparent 70%); top:38%; left:38%; opacity:.14; animation:drift3 28s ease-in-out infinite;}
+  @keyframes drift1{0%,100%{transform:translate(0,0) scale(1);} 50%{transform:translate(-50px,50px) scale(1.15);}}
+  @keyframes drift2{0%,100%{transform:translate(0,0) scale(1);} 50%{transform:translate(50px,-30px) scale(1.1);}}
+  @keyframes drift3{0%,100%{transform:translate(0,0) scale(1);} 50%{transform:translate(35px,35px) scale(1.2);}}
+
+  .grain{position:fixed; inset:0; z-index:1; pointer-events:none;
+    background-image:radial-gradient(rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size:3px 3px; opacity:.5;}
+
+  section, header, footer, nav, main{position:relative; z-index:2;}
+
+  .wrap{max-width:980px; margin:0 auto; padding:0 24px;}
+
+  .glass{
+    background:var(--glass-bg);
+    border:1px solid var(--glass-bd);
+    backdrop-filter:blur(18px) saturate(140%);
+    -webkit-backdrop-filter:blur(18px) saturate(140%);
+    border-radius:22px;
+  }
+
+  nav{padding:18px 0;}
+  .nav-inner{
+    max-width:980px; margin:0 auto;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:12px 22px; border-radius:999px;
+  }
+  .logo{
+    font-family:'Lalezar', cursive; font-size:1.4rem; text-decoration:none;
+    background:linear-gradient(90deg, var(--blue), var(--violet) 60%, var(--pink));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .back-link{color:var(--text-1); text-decoration:none; font-size:.9rem; font-weight:500; display:flex; align-items:center; gap:6px;}
+  .back-link:hover{color:var(--text-0);}
+
+  /* breadcrumb */
+  .crumb{
+    display:flex; align-items:center; gap:8px; justify-content:center;
+    font-size:.82rem; color:var(--text-2); margin:38px 0 8px;
+  }
+  .crumb a{color:var(--text-2); text-decoration:none;}
+  .crumb a:hover{color:var(--text-1);}
+  .crumb .sep{opacity:.5;}
+  .crumb .current{color:var(--text-1); font-weight:700;}
+
+  /* subject header */
+  .subj-header{
+    text-align:center;
+    padding:20px 0 40px;
+  }
+  .subj-header .ic{
+    font-size:3.2rem;
+    display:inline-block;
+    margin-bottom:14px;
+    filter:drop-shadow(0 8px 24px rgba(124,92,252,.35));
+  }
+  .subj-header h1{
+    font-family:'Lalezar', cursive;
+    font-size:clamp(2.1rem, 5vw, 2.9rem);
+    margin-bottom:10px;
+  }
+  .subj-header h1 span{
+    background:linear-gradient(100deg, var(--blue), var(--violet), var(--pink));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .subj-header p{color:var(--text-1); font-size:.95rem;}
+
+  /* stats row */
+  .stats-row{
+    display:flex; justify-content:center; gap:14px; margin-top:26px; flex-wrap:wrap;
+  }
+  .stat-pill{
+    padding:9px 18px; border-radius:999px; font-size:.8rem; color:var(--text-1);
+    display:flex; align-items:center; gap:7px;
+  }
+  .stat-pill b{color:var(--text-0); font-weight:800;}
+
+  /* category tabs */
+  .cat-tabs{
+    display:flex; justify-content:center; gap:10px; margin:38px 0 26px;
+    flex-wrap:wrap;
+  }
+  .cat-tab{
+    padding:12px 28px;
+    border-radius:16px;
+    font-size:.92rem;
+    font-weight:800;
+    cursor:pointer;
+    color:var(--text-1);
+    border:1px solid var(--glass-bd);
+    background:rgba(255,255,255,.03);
+    transition:all .3s;
+    display:flex; align-items:center; gap:8px;
+  }
+  .cat-tab .count{
+    font-size:.72rem;
+    background:rgba(255,255,255,.08);
+    padding:2px 8px;
+    border-radius:999px;
+    font-weight:700;
+  }
+  .cat-tab:hover{color:var(--text-0);}
+  .cat-tab.active{
+    color:#fff;
+    background:linear-gradient(120deg, var(--violet), var(--blue));
+    border-color:transparent;
+    box-shadow:0 10px 28px -8px rgba(124,92,252,.55);
+  }
+  .cat-tab.active .count{background:rgba(255,255,255,.22);}
+
+  /* item list */
+  .item-list{
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+    margin-bottom:80px;
+  }
+
+  .item-card{
+    display:flex;
+    align-items:center;
+    gap:18px;
+    padding:20px 22px;
+    text-decoration:none;
+    color:inherit;
+    transition:transform .3s, border-color .3s, background .3s;
+    position:relative;
+    overflow:hidden;
+  }
+  .item-card::before{
+    content:'';
+    position:absolute;
+    inset:0;
+    background:linear-gradient(120deg, rgba(124,92,252,.12), rgba(76,141,255,.06));
+    opacity:0;
+    transition:opacity .3s;
+  }
+  .item-card:hover{
+    transform:translateY(-4px);
+    border-color:rgba(255,255,255,.22);
+  }
+  .item-card:hover::before{opacity:1;}
+
+  .item-badge{
+    flex-shrink:0;
+    width:52px; height:52px;
+    border-radius:15px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:1.4rem;
+    background:linear-gradient(135deg, var(--violet), var(--blue));
+    position:relative; z-index:1;
+  }
+  .item-badge.summary{
+    background:linear-gradient(135deg, var(--pink), var(--gold));
+  }
+  .item-badge.quiz{
+    background:linear-gradient(135deg, #34d399, #4c8dff);
+  }
+
+  .item-body{flex:1; position:relative; z-index:1; min-width:0;}
+  .item-body h4{
+    font-size:1rem;
+    font-weight:800;
+    margin-bottom:5px;
+  }
+  .item-meta{
+    display:flex; gap:10px; flex-wrap:wrap;
+    font-size:.76rem;
+    color:var(--text-2);
+  }
+  .item-meta span{display:flex; align-items:center; gap:4px;}
+
+  .item-action{
+    flex-shrink:0;
+    position:relative; z-index:1;
+    display:flex; align-items:center; gap:8px;
+    font-size:.82rem;
+    font-weight:700;
+    padding:9px 16px;
+    border-radius:12px;
+    color:var(--text-1);
+    border:1px solid var(--glass-bd);
+    white-space:nowrap;
+  }
+  .item-card:hover .item-action{
+    color:#fff;
+    background:linear-gradient(120deg, var(--violet), var(--blue));
+    border-color:transparent;
+  }
+  .item-action.soon{
+    color:var(--text-2);
+  }
+  .item-card:hover .item-action.soon{
+    background:rgba(255,255,255,.08);
+    color:var(--text-1);
+  }
+
+  .empty-state{
+    text-align:center;
+    padding:60px 20px;
+    color:var(--text-2);
+  }
+  .empty-state .ic{font-size:2.4rem; margin-bottom:14px; display:block;}
+
+  @media(max-width:640px){
+    .item-card{padding:16px; gap:12px;}
+    .item-badge{width:44px; height:44px; font-size:1.2rem;}
+    .item-action{padding:8px 12px; font-size:.76rem;}
+    .cat-tab{padding:10px 18px; font-size:.85rem;}
+  }
+
+  a:focus-visible, button:focus-visible{
+    outline:2px solid var(--blue); outline-offset:3px;
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-mesh">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+</div>
+<div class="grain"></div>
+
+<nav>
+  <div class="nav-inner glass">
+    <a href="index.html" class="logo">محلولة</a>
+    <a href="index.html" class="back-link">الرئيسية ←</a>
+  </div>
+</nav>
+
+<main>
+  <div class="wrap">
+    <div class="crumb">
+      <a href="index.html">الرئيسية</a>
+      <span class="sep">/</span>
+      <a href="index.html#subjects">المواد</a>
+      <span class="sep">/</span>
+      <span class="current" id="crumbCurrent">المادة</span>
+    </div>
+
+    <div class="subj-header">
+      <span class="ic" id="subjIcon">📖</span>
+      <h1><span id="subjTitle">المادة</span></h1>
+      <p>كل الامتحانات والتلخيصات المتوفرة بمكان واحد</p>
+      <div class="stats-row">
+        <div class="stat-pill glass">📄 <b id="examCount">0</b> امتحان</div>
+        <div class="stat-pill glass">📝 <b id="summaryCount">0</b> تلخيص</div>
+        <div class="stat-pill glass">🧠 <b id="quizCount">0</b> كويز</div>
+      </div>
+    </div>
+
+    <div class="cat-tabs">
+      <div class="cat-tab active" data-cat="exams">
+        📄 امتحانات <span class="count" id="tabExamCount">0</span>
+      </div>
+      <div class="cat-tab" data-cat="summaries">
+        📝 تلخيصات <span class="count" id="tabSummaryCount">0</span>
+      </div>
+      <div class="cat-tab" data-cat="quizzes">
+        🧠 كويزات إلكترونية <span class="count" id="tabQuizCount">0</span>
+      </div>
+    </div>
+
+    <div class="item-list" id="itemList"></div>
+  </div>
+</main>
+
+<script>
+// ============ عدّل هون: ضيف روابط الملفات الحقيقية تبعك ============
+// لكل مادة، عندك مصفوفتين: exams (امتحانات) و summaries (تلخيصات)
+// كل عنصر: { title: "العنوان", meta: "وصف قصير", href: "رابط الملف", ready: true/false }
+// إذا ready:false رح يظهر بشارة "قريبًا" وما يفتح رابط.
+
+const SUBJECT_CONTENT = {
+  "عربي": {
+    title: "اللغة العربية",
+    icon: "📖",
+    exams: [
+      { title: "امتحان نصف الفصل الأول", meta: "2025 · نصوص وقواعد", href: "#", ready: false },
+      { title: "امتحان نهاية الفصل الأول", meta: "2025 · شامل", href: "#", ready: false },
+      { title: "امتحان نصف الفصل الثاني", meta: "2024 · شامل", href: "#", ready: false }
+    ],
+    summaries: [
+      { title: "تلخيص النصوص - الوحدة الأولى", meta: "PDF · صفحتين", href: "#", ready: false },
+      { title: "تلخيص القواعد - النحو والصرف", meta: "PDF · 4 صفحات", href: "#", ready: false },
+      { title: "تلخيص التعبير والبلاغة", meta: "PDF · 3 صفحات", href: "#", ready: false }
+    ],
+    quizzes: [
+      { title: "كويز النحو والصرف", meta: "تفاعلي · 10 أسئلة", href: "#", ready: false },
+      { title: "كويز النصوص الأدبية", meta: "تفاعلي · 12 سؤال", href: "#", ready: false }
+    ]
+  },
+  "رياضيات": {
+    title: "الرياضيات",
+    icon: "➗",
+    exams: [
+      { title: "امتحان نصف الفصل الأول", meta: "2025 · جبر وهندسة", href: "#", ready: false },
+      { title: "امتحان نهاية الفصل الأول", meta: "2025 · شامل", href: "#", ready: false },
+      { title: "امتحان نصف الفصل الثاني", meta: "2024 · تفاضل", href: "#", ready: false }
+    ],
+    summaries: [
+      { title: "تلخيص التوابع والنهايات", meta: "PDF · 3 صفحات", href: "#", ready: false },
+      { title: "تلخيص المشتقات", meta: "PDF · 3 صفحات", href: "#", ready: false },
+      { title: "تلخيص الهندسة الفراغية", meta: "PDF · 4 صفحات", href: "#", ready: false }
+    ],
+    quizzes: [
+      { title: "كويز التوابع والنهايات", meta: "تفاعلي · 10 أسئلة", href: "#", ready: false },
+      { title: "كويز المشتقات", meta: "تفاعلي · 8 أسئلة", href: "#", ready: false }
+    ]
+  },
+  "تاريخ_الاردن": {
+    title: "تاريخ الأردن",
+    icon: "🏛️",
+    exams: [
+      { title: "امتحان نصف الفصل الأول", meta: "2025 · تأسيس الإمارة", href: "#", ready: false },
+      { title: "امتحان نهاية الفصل الأول", meta: "2025 · شامل", href: "#", ready: false },
+      { title: "امتحان نصف الفصل الثاني", meta: "2024 · شامل", href: "#", ready: false }
+    ],
+    summaries: [
+      { title: "تلخيص تأسيس إمارة شرق الأردن", meta: "PDF · صفحتين", href: "#", ready: false },
+      { title: "تلخيص مرحلة الاستقلال", meta: "PDF · 3 صفحات", href: "#", ready: false },
+      { title: "تلخيص العهد الهاشمي", meta: "PDF · 3 صفحات", href: "#", ready: false }
+    ],
+    quizzes: [
+      { title: "كويز تأسيس الإمارة", meta: "تفاعلي · 10 أسئلة", href: "#", ready: false },
+      { title: "كويز مرحلة الاستقلال", meta: "تفاعلي · 8 أسئلة", href: "#", ready: false }
+    ]
+  },
+  "تربية_اسلامية": {
+    title: "التربية الإسلامية",
+    icon: "🕌",
+    exams: [
+      { title: "امتحان نصف الفصل الأول", meta: "2025 · فقه وتفسير", href: "#", ready: false },
+      { title: "امتحان نهاية الفصل الأول", meta: "2025 · شامل", href: "#", ready: false },
+      { title: "امتحان نصف الفصل الثاني", meta: "2024 · شامل", href: "#", ready: false }
+    ],
+    summaries: [
+      { title: "تلخيص أحكام الفقه", meta: "PDF · 3 صفحات", href: "#", ready: false },
+      { title: "تلخيص التفسير", meta: "PDF · صفحتين", href: "#", ready: false },
+      { title: "تلخيص السيرة النبوية", meta: "PDF · 4 صفحات", href: "#", ready: false }
+    ],
+    quizzes: [
+      { title: "كويز أحكام الفقه", meta: "تفاعلي · 10 أسئلة", href: "#", ready: false },
+      { title: "كويز السيرة النبوية", meta: "تفاعلي · 8 أسئلة", href: "#", ready: false }
+    ]
+  }
+};
+// ==================================================================
+
+const params = new URLSearchParams(window.location.search);
+let subjectKey = params.get('s');
+if(!subjectKey || !SUBJECT_CONTENT[subjectKey]) subjectKey = "رياضيات";
+
+const data = SUBJECT_CONTENT[subjectKey];
+let activeCat = 'exams';
+
+document.getElementById('crumbCurrent').textContent = data.title;
+document.getElementById('subjTitle').textContent = data.title;
+document.getElementById('subjIcon').textContent = data.icon;
+document.getElementById('examCount').textContent = data.exams.length;
+document.getElementById('summaryCount').textContent = data.summaries.length;
+document.getElementById('quizCount').textContent = data.quizzes.length;
+document.getElementById('tabExamCount').textContent = data.exams.length;
+document.getElementById('tabSummaryCount').textContent = data.summaries.length;
+document.getElementById('tabQuizCount').textContent = data.quizzes.length;
+document.title = data.title + ' | محلولة';
+
+const itemListEl = document.getElementById('itemList');
+const tabs = document.querySelectorAll('.cat-tab');
+
+function renderList(){
+  const items = data[activeCat];
+  itemListEl.innerHTML = '';
+
+  if(items.length === 0){
+    const empty = document.createElement('div');
+    empty.className = 'empty-state glass';
+    empty.innerHTML = '<span class="ic">🗂️</span> لسا ما في محتوى مضاف هون - قريبًا إن شاء الله.';
+    itemListEl.appendChild(empty);
+    return;
+  }
+
+  items.forEach((item, i) => {
+    const card = document.createElement('a');
+    card.className = 'item-card glass';
+    card.href = item.ready ? item.href : 'javascript:void(0)';
+    if(item.ready) { card.target = '_blank'; card.rel = 'noopener noreferrer'; }
+
+    const badgeIcon = activeCat === 'exams' ? '📄' : (activeCat === 'summaries' ? '📝' : '🧠');
+    const badgeClass = activeCat === 'exams' ? '' : (activeCat === 'summaries' ? 'summary' : 'quiz');
+    const actionText = item.ready ? (activeCat === 'exams' ? 'تحميل' : (activeCat === 'summaries' ? 'عرض' : 'ابدأ الكويز')) : 'قريبًا';
+    const actionClass = item.ready ? '' : 'soon';
+
+    card.innerHTML = `
+      <div class="item-badge ${badgeClass}">${badgeIcon}</div>
+      <div class="item-body">
+        <h4>${item.title}</h4>
+        <div class="item-meta"><span>${item.meta}</span></div>
+      </div>
+      <div class="item-action ${actionClass}">${actionText} ${item.ready ? '↓' : ''}</div>
+    `;
+    itemListEl.appendChild(card);
+  });
+}
+
+tabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    activeCat = tab.dataset.cat;
+    tabs.forEach(t => t.classList.toggle('active', t === tab));
+    renderList();
+  });
+});
+
+renderList();
+</script>
+
+</body>
+</html>
