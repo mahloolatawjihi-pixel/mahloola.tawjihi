@@ -1,14 +1,14 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-// استدعاء مكتبة Hugging Face
 const { HfInference } = require('@huggingface/inference');
 
-const app = express();
+// تعريف الـ app لازم يكون هون، أول شيء بعد استدعاء المكتبات
+const app = express(); 
+
 app.use(cors());
 app.use(express.json());
 
-// إعداد الاتصال باستخدام مفتاحك الجديد
 const hf = new HfInference(process.env.HF_API_KEY);
 
 app.post('/api/chat', async (req, res) => {
@@ -17,7 +17,6 @@ app.post('/api/chat', async (req, res) => {
     try {
         const chatHistory = history.map(m => `${m.role === 'user' ? 'الطالب' : 'سند'}: ${m.content}`).join('\n');
 
-        // بناء البرومبت (التعليمات)
         const prompt = `أنت "سند"، مساعد ذكاء اصطناعي ذكي وودود مخصص لطلاب التوجيهي 2010 في الأردن.
         مهمتك مساعدة الطالب في مادة: ${subject}.
         
@@ -29,7 +28,6 @@ app.post('/api/chat', async (req, res) => {
         
         سؤال الطالب الحالي: ${question}`;
 
-        // استخدام نموذج Mistral القوي والمتوفر مجاناً على Hugging Face
         const result = await hf.textGeneration({
             model: 'mistralai/Mistral-7B-Instruct-v0.2',
             inputs: prompt,
@@ -39,7 +37,6 @@ app.post('/api/chat', async (req, res) => {
             }
         });
 
-        // إرسال الرد
         res.json({ reply: result.generated_text });
 
     } catch (error) {
