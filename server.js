@@ -1,14 +1,10 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const { HfInference } = require('@huggingface/inference');
 
-const app = express(); 
-
+const app = express();
 app.use(cors());
 app.use(express.json());
-
-const hf = new HfInference(process.env.HF_API_KEY);
 
 app.post('/api/chat', async (req, res) => {
     const { question, subject, history } = req.body;
@@ -16,26 +12,31 @@ app.post('/api/chat', async (req, res) => {
     try {
         const chatHistory = history.map(m => `${m.role === 'user' ? 'الطالب' : 'سند'}: ${m.content}`).join('\n');
 
-        const prompt = `أنت "سند"، مساعد ذكاء اصطناعي ذكي وودود مخصص لطلاب التوجيهي 2010 في الأردن.
+        const prompt = `أنت "سند"، مساعد ذكاء اصطناعي ذكي وودود مخصص لطلاب التوجيهي 2010 في الأردن. 
         مهمتك مساعدة الطالب في مادة: ${subject}.
-        
-        القواعد:
-        1. أجب بلهجة أردنية بسيطة وقريبة من الطالب.
-        2. التزم بالمنهاج الوزاري الأردني.
-        3. استخدم سجل المحادثة التالي لفهم سياق السؤال:
+        القواعد: أجب بلهجة أردنية بسيطة. سجل المحادثة:
         ${chatHistory}
-        
-        سؤال الطالب الحالي: ${question}`;
+        سؤال الطالب: ${question}`;
 
-        // التعديل هنا: استخدام chatCompletion بدلاً من textGeneration لضمان التوافق
-        const result = await hf.chatCompletion({
-            model: 'mistralai/Mistral-7B-Instruct-v0.2',
-            messages: [{ role: 'user', content: prompt }],
-            max_tokens: 500,
-            temperature: 0.7
+        // اتصال مباشر عبر fetch لتجاوز قيود المكتبة
+        const response = await fetch("https://api-inference.huggingface.co/models/HuggingFaceH4/zephyr-7b-beta", {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${process.env.HF_API_KEY}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                inputs: prompt,
+                parameters: { max_new_tokens: 500, temperature: 0.7 }
+            })
         });
 
-        res.json({ reply: result.choices[0].message.content });
+        const data = await response.json();
+        
+        // استخراج النص من رد Hugging Face
+        const reply = data[0]?.generated_text ? data[0].generated_text.split("سؤال الطالب:")[1] || data[0].generated_text : "عذرًا، لم أستطع الرد الآن.";
+
+        res.json({ reply: reply.trim() });
 
     } catch (error) {
         console.error("خطأ في السيرفر:", error);
