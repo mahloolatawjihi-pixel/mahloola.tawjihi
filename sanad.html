@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>سند | محلولة</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lalezar&family=Tajawal:wght@300;400;500;700;800;900&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg-0: #080a14;
+      --bg-1: #0d1122;
+      --bg-2: #12172b;
+      --violet: #7c5cfc;
+      --blue: #4c8dff;
+      --pink: #ff6b9d;
+      --text-0: #f3f4fb;
+      --text-1: #aab0cc;
+      --text-2: #727a9c;
+      --glass-bd: rgba(255, 255, 255, 0.09);
+      --glass-bg: rgba(255, 255, 255, 0.045);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      height: 100%;
+    }
+
+    body {
+      background: var(--bg-0);
+      color: var(--text-0);
+      font-family: 'Tajawal', sans-serif;
+      overflow-x: hidden;
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .bg-mesh {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(90px);
+      opacity: .32;
+      will-change: transform;
+    }
+
+    .blob-1 {
+      width: 480px;
+      height: 480px;
+      background: radial-gradient(circle, var(--violet), transparent 70%);
+      top: -140px;
+      right: -120px;
+      animation: drift1 22s ease-in-out infinite;
+    }
+
+    .blob-2 {
+      width: 420px;
+      height: 420px;
+      background: radial-gradient(circle, var(--blue), transparent 70%);
+      bottom: -160px;
+      left: -100px;
+      animation: drift2 26s ease-in-out infinite;
+    }
+
+    @keyframes drift1 {
+
+      0%,
+      100% {
+        transform: translate(0, 0) scale(1);
+      }
+
+      50% {
+        transform: translate(-50px, 50px) scale(1.15);
+      }
+    }
+
+    @keyframes drift2 {
+
+      0%,
+      100% {
+        transform: translate(0, 0) scale(1);
+      }
+
+      50% {
+        transform: translate(50px, -30px) scale(1.1);
+      }
+    }
+
+    section,
+    header,
+    footer,
+    main,
+    nav {
+      position: relative;
+      z-index: 2;
+    }
+
+    .wrap {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 20px;
+      width: 100%;
+    }
+
+    .glass {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-bd);
+      backdrop-filter: blur(18px) saturate(140%);
+      -webkit-backdrop-filter: blur(18px) saturate(140%);
+      border-radius: 22px;
+    }
+
+    nav {
+      padding: 18px 0;
+    }
+
+    .nav-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 22px;
+      border-radius: 999px;
+    }
+
+    .logo {
+      font-family: 'Lalezar', cursive;
+      font-size: 1.4rem;
+      text-decoration: none;
+      background: linear-gradient(90deg, var(--blue), var(--violet) 60%, var(--pink));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .back-link {
+      color: var(--text-1);
+      text-decoration: none;
+      font-size: .9rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .back-link:hover {
+      color: var(--text-0);
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 10px 0 20px;
+    }
+
+    .chat-shell {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      max-width: 900px;
+      margin: 0 auto;
+      width: 100%;
+      padding: 0 20px;
+      min-height: 0;
+    }
+
+    .chat-head {
+      text-align: center;
+      padding: 6px 0 18px;
+    }
+
+    .chat-head h1 {
+      font-family: 'Lalezar', cursive;
+      font-size: 2rem;
+      margin-bottom: 6px;
+    }
+
+    .chat-head h1 span {
+      background: linear-gradient(100deg, var(--blue), var(--violet));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .chat-head p {
+      color: var(--text-1);
+      font-size: .88rem;
+    }
+
+    .subject-tabs {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    .subj-tab {
+      padding: 9px 18px;
+      border-radius: 999px;
+      font-size: .85rem;
+      font-weight: 700;
+      cursor: pointer;
+      color: var(--text-1);
+      border: 1px solid var(--glass-bd);
+      background: rgba(255, 255, 255, .03);
+      transition: all .25s;
+    }
+
+    .subj-tab:hover {
+      color: var(--text-0);
+    }
+
+    .subj-tab.active {
+      color: #fff;
+      background: linear-gradient(120deg, var(--violet), var(--blue));
+      border-color: transparent;
+      box-shadow: 0 6px 20px -6px rgba(124, 92, 252, .6);
+    }
+
+    .chat-panel {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    .messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 26px 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      min-height: 320px;
+      max-height: 56vh;
+    }
+
+    .messages::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .messages::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, .12);
+      border-radius: 10px;
+    }
+
+    .msg-row {
+      display: flex;
+      max-width: 100%;
+    }
+
+    .msg-row.user {
+      justify-content: flex-start;
+    }
+
+    .msg-row.bot {
+      justify-content: flex-end;
+    }
+
+    .bubble {
+      max-width: 78%;
+      padding: 13px 17px;
+      border-radius: 18px;
+      font-size: .92rem;
+      line-height: 1.85;
+      white-space: pre-wrap;
+    }
+
+    .bubble.user {
+      background: linear-gradient(120deg, var(--violet), var(--blue));
+      color: #fff;
+      border-bottom-left-radius: 5px;
+    }
+
+    .bubble.bot {
+      background: rgba(255, 255, 255, .05);
+      border: 1px solid var(--glass-bd);
+      border-bottom-right-radius: 5px;
+    }
+
+    .bubble.bot.apology {
+      border-color: rgba(255, 107, 157, .35);
+    }
+
+    .typing {
+      display: flex;
+      gap: 5px;
+      padding: 4px 2px;
+    }
+
+    .typing span {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--text-1);
+      animation: blink 1.2s infinite ease-in-out;
+    }
+
+    .typing span:nth-child(2) {
+      animation-delay: .2s;
+    }
+
+    .typing span:nth-child(3) {
+      animation-delay: .4s;
+    }
+
+    @keyframes blink {
+
+      0%,
+      80%,
+      100% {
+        opacity: .25;
+        transform: translateY(0);
+      }
+
+      40% {
+        opacity: 1;
+        transform: translateY(-3px);
+      }
+    }
+
+    .chips {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      padding: 0 22px 16px;
+    }
+
+    .chip {
+      font-size: .78rem;
+      padding: 7px 14px;
+      border-radius: 999px;
+      color: var(--text-1);
+      border: 1px solid var(--glass-bd);
+      background: rgba(255, 255, 255, .03);
+      cursor: pointer;
+      transition: all .2s;
+    }
+
+    .chip:hover {
+      color: var(--text-0);
+      border-color: rgba(255, 255, 255, .25);
+    }
+
+    .composer {
+      display: flex;
+      gap: 10px;
+      padding: 16px 18px;
+      border-top: 1px solid var(--glass-bd);
+    }
+
+    .composer input {
+      flex: 1;
+      background: rgba(255, 255, 255, .04);
+      border: 1px solid var(--glass-bd);
+      color: var(--text-0);
+      border-radius: 14px;
+      padding: 13px 16px;
+      font-family: 'Tajawal', sans-serif;
+      font-size: .95rem;
+      outline: none;
+    }
+
+    .composer input::placeholder {
+      color: var(--text-2);
+    }
+
+    .composer input:focus {
+      border-color: rgba(124, 92, 252, .6);
+    }
+
+    .send-btn {
+      background: linear-gradient(120deg, var(--violet), var(--blue));
+      border: none;
+      color: #fff;
+      width: 50px;
+      border-radius: 14px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: transform .2s, opacity .2s;
+      flex-shrink: 0;
+    }
+
+    .send-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .send-btn:disabled {
+      opacity: .5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .note {
+      text-align: center;
+      color: var(--text-2);
+      font-size: .75rem;
+      padding: 14px 0 0;
+    }
+
+    @media(max-width:640px) {
+      .messages {
+        max-height: 50vh;
+      }
+
+      .bubble {
+        max-width: 88%;
+      }
+    }
+
+    a:focus-visible,
+    button:focus-visible,
+    input:focus-visible {
+      outline: 2px solid var(--blue);
+      outline-offset: 2px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="bg-mesh">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+  </div>
+
+  <nav>
+    <div class="nav-inner glass">
+      <a href="index.html" class="logo">محلولة</a>
+      <a href="index.html" class="back-link">الرئيسية ←</a>
+    </div>
+  </nav>
+
+  <main>
+    <div class="chat-shell">
+      <div class="chat-head">
+        <h1>احكي مع <span>سند</span></h1>
+        <p>اختار المادة، واسأل سند أي سؤال - جوابه دايمًا من الكتاب الوزاري بس.</p>
+      </div>
+
+      <div class="subject-tabs" id="subjectTabs">
+        <div class="subj-tab" data-subject="عربي">اللغة العربية</div>
+        <div class="subj-tab" data-subject="رياضيات">الرياضيات</div>
+        <div class="subj-tab" data-subject="تاريخ_الاردن">تاريخ الأردن</div>
+        <div class="subj-tab" data-subject="تربية_اسلامية">التربية الإسلامية</div>
+      </div>
+
+      <div class="chat-panel glass">
+        <div class="messages" id="messages"></div>
+        <div class="chips" id="chips"></div>
+        <div class="composer">
+          <input type="text" id="userInput" placeholder="اكتب سؤالك هون...">
+          <button class="send-btn" id="sendBtn" aria-label="إرسال">↑</button>
+        </div>
+      </div>
+
+      <p class="note">سند بيجاوب بس من الكتب الوزارية الأربعة، وإذا السؤال برا المنهاج رح يعتذر ويرجعّك لها.</p>
+    </div>
+  </main>
+
+  <script src="sanad-data.js"></script>
+  <script>
+    const SUBJECT_LABELS = {
+      "عربي": "اللغة العربية",
+      "رياضيات": "الرياضيات",
+      "تاريخ_الاردن": "تاريخ الأردن",
+      "تربية_اسلامية": "التربية الإسلامية"
+    };
+
+    const SUBJECT_CHIPS = {
+      "عربي": ["لخصلي درس النحو الأول", "شو الفرق بين النعت والحال؟", "اشرحلي أسلوب التوكيد"],
+      "رياضيات": ["اشرحلي درس النهايات", "كيف بحسب مشتقة تابع؟", "شو هو التابع الثابت؟"],
+      "تاريخ_الاردن": ["لخصلي أهم أحداث تأسيس إمارة شرق الأردن", "شو دور الشريف حسين؟", "اشرحلي مرحلة الاستقلال"],
+      "تربية_اسلامية": ["اشرحلي حكم الوضوء", "لخصلي الدرس عن الصدق", "شو معنى الآية اللي درسناها؟"]
+    };
+
+    const APOLOGY_TEXT = "عذرًا، ما بقدر أجاوبك على هذا السؤال 🙏 جرّب ترجع للكتب الوزارية الأربعة، وبإذن الله تلاقي الجواب فيها.";
+
+    let currentSubject = "عربي";
+    let history = [];
+    let isLoading = false;
+
+    const messagesEl = document.getElementById('messages');
+    const chipsEl = document.getElementById('chips');
+    const inputEl = document.getElementById('userInput');
+    const sendBtn = document.getElementById('sendBtn');
+    const tabsEl = document.getElementById('subjectTabs');
+
+    function addBubble(role, text, extraClass) {
+      const row = document.createElement('div');
+      row.className = 'msg-row ' + (role === 'user' ? 'user' : 'bot');
+      const bubble = document.createElement('div');
+      bubble.className = 'bubble ' + (role === 'user' ? 'user' : 'bot') + (extraClass ? ' ' + extraClass : '');
+      bubble.textContent = text;
+      row.appendChild(bubble);
+      messagesEl.appendChild(row);
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+      return row;
+    }
+
+    function addTyping() {
+      const row = document.createElement('div');
+      row.className = 'msg-row bot';
+      row.id = 'typingRow';
+      const bubble = document.createElement('div');
+      bubble.className = 'bubble bot';
+      bubble.innerHTML = '<div class="typing"><span></span><span></span><span></span></div>';
+      row.appendChild(bubble);
+      messagesEl.appendChild(row);
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+    }
+
+    function removeTyping() {
+      const row = document.getElementById('typingRow');
+      if (row) row.remove();
+    }
+
+    function renderChips(subject) {
+      chipsEl.innerHTML = '';
+      (SUBJECT_CHIPS[subject] || []).forEach(text => {
+        const chip = document.createElement('div');
+        chip.className = 'chip';
+        chip.textContent = text;
+        chip.addEventListener('click', () => {
+          inputEl.value = text;
+          sendMessage();
+        });
+        chipsEl.appendChild(chip);
+      });
+    }
+
+    function switchSubject(subject) {
+      currentSubject = subject;
+      history = [];
+      messagesEl.innerHTML = '';
+      tabsEl.querySelectorAll('.subj-tab').forEach(t => t.classList.toggle('active', t.dataset.subject === subject));
+      addBubble('bot', `أهلاً فيك! أنا سند 👋 جاهز أساعدك بمادة ${SUBJECT_LABELS[subject]}. اسألني أي سؤال من الكتاب الوزاري.`);
+      renderChips(subject);
+    }
+
+    async function sendMessage() {
+      const text = inputEl.value.trim();
+      if (!text || isLoading) return;
+
+      inputEl.value = '';
+      addBubble('user', text);
+      history.push({ role: 'user', content: text });
+
+      isLoading = true;
+      sendBtn.disabled = true;
+      addTyping();
+
+      try {
+        const response = await fetch('http://localhost:3000/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            question: text,
+            subject: currentSubject,
+            history: history
+          })
+        });
+
+        const data = await response.json();
+        removeTyping();
+        addBubble('bot', data.reply);
+        history.push({ role: 'assistant', content: data.reply });
+
+      } catch (error) {
+        removeTyping();
+        addBubble('bot', "سيرفر سند غير متصل حالياً! تأكد أنك كتبت node server.js في الـ Terminal.");
+      }
+
+      isLoading = false;
+      sendBtn.disabled = false;
+      inputEl.focus();
+    }
+
+    sendBtn.addEventListener('click', sendMessage);
+    inputEl.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') sendMessage();
+    });
+    tabsEl.querySelectorAll('.subj-tab').forEach(tab => {
+      tab.addEventListener('click', () => switchSubject(tab.dataset.subject));
+    });
+
+    switchSubject(currentSubject);
+  </script>
+
+</body>
+</html>

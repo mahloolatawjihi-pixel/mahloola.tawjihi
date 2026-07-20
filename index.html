@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>محلولة | توجيهي 2010 - المسار الأكاديمي</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lalezar&family=Tajawal:wght@300;400;500;700;800;900&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg-0: #080a14;
+      --bg-1: #0d1122;
+      --bg-2: #12172b;
+      --violet: #7c5cfc;
+      --blue: #4c8dff;
+      --pink: #ff6b9d;
+      --text-0: #f3f4fb;
+      --text-1: #aab0cc;
+      --text-2: #727a9c;
+      --glass-bd: rgba(255, 255, 255, 0.09);
+      --glass-bg: rgba(255, 255, 255, 0.045);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg-0);
+      color: var(--text-0);
+      font-family: 'Tajawal', sans-serif;
+      overflow-x: hidden;
+      position: relative;
+      min-height: 100vh;
+    }
+
+    /* ---------- ambient background blobs ---------- */
+    .bg-mesh {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(90px);
+      opacity: .35;
+      will-change: transform;
+    }
+
+    .blob-1 {
+      width: 520px;
+      height: 520px;
+      background: radial-gradient(circle, var(--violet), transparent 70%);
+      top: -140px;
+      right: -120px;
+      animation: drift1 22s ease-in-out infinite;
+    }
+
+    .blob-2 {
+      width: 460px;
+      height: 460px;
+      background: radial-gradient(circle, var(--blue), transparent 70%);
+      bottom: -160px;
+      left: -100px;
+      animation: drift2 26s ease-in-out infinite;
+    }
+
+    .blob-3 {
+      width: 380px;
+      height: 380px;
+      background: radial-gradient(circle, var(--pink), transparent 70%);
+      top: 40%;
+      left: 35%;
+      opacity: .2;
+      animation: drift3 30s ease-in-out infinite;
+    }
+
+    @keyframes drift1 {
+
+      0%,
+      100% {
+        transform: translate(0, 0) scale(1);
+      }
+
+      50% {
+        transform: translate(-60px, 60px) scale(1.15);
+      }
+    }
+
+    @keyframes drift2 {
+
+      0%,
+      100% {
+        transform: translate(0, 0) scale(1);
+      }
+
+      50% {
+        transform: translate(50px, -40px) scale(1.1);
+      }
+    }
+
+    @keyframes drift3 {
+
+      0%,
+      100% {
+        transform: translate(0, 0) scale(1);
+      }
+
+      50% {
+        transform: translate(40px, 40px) scale(1.2);
+      }
+    }
+
+    .grain {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      background-image: radial-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+      background-size: 3px 3px;
+      opacity: .5;
+    }
+
+    section,
+    header,
+    footer {
+      position: relative;
+      z-index: 2;
+    }
+
+    .wrap {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 28px;
+    }
+
+    /* ---------- glass utility ---------- */
+    .glass {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-bd);
+      backdrop-filter: blur(18px) saturate(140%);
+      -webkit-backdrop-filter: blur(18px) saturate(140%);
+      border-radius: 22px;
+    }
+
+    /* ---------- nav ---------- */
+    nav {
+      position: fixed;
+      top: 18px;
+      left: 0;
+      right: 0;
+      z-index: 50;
+      display: flex;
+      justify-content: center;
+      padding: 0 20px;
+    }
+
+    .nav-inner {
+      width: 100%;
+      max-width: 820px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 24px;
+      border-radius: 999px;
+    }
+
+    .logo {
+      font-family: 'Lalezar', cursive;
+      font-size: 1.5rem;
+      letter-spacing: .5px;
+      background: linear-gradient(90deg, var(--blue), var(--violet) 60%, var(--pink));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 26px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-1);
+      text-decoration: none;
+      font-size: .95rem;
+      font-weight: 500;
+      transition: color .25s;
+    }
+
+    .nav-links a:hover {
+      color: var(--text-0);
+    }
+
+    .nav-toggle {
+      display: none;
+    }
+
+    @media(max-width:640px) {
+      .nav-links {
+        position: absolute;
+        top: 70px;
+        left: 20px;
+        right: 20px;
+        flex-direction: column;
+        align-items: center;
+        gap: 14px;
+        padding: 20px;
+        border-radius: 20px;
+        display: none;
+      }
+
+      .nav-links.open {
+        display: flex;
+      }
+
+      .nav-toggle {
+        display: block;
+        background: none;
+        border: none;
+        color: var(--text-0);
+        font-size: 1.4rem;
+        cursor: pointer;
+      }
+    }
+
+    /* ---------- hero ---------- */
+    header.hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 140px 0 80px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 50px;
+      align-items: center;
+    }
+
+    @media(max-width:900px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: .85rem;
+      color: var(--text-1);
+      padding: 7px 16px;
+      border-radius: 999px;
+      margin-bottom: 26px;
+    }
+
+    .eyebrow .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--pink);
+      box-shadow: 0 0 10px var(--pink);
+    }
+
+    h1.title {
+      font-family: 'Lalezar', cursive;
+      font-size: clamp(3.2rem, 8vw, 5.6rem);
+      line-height: 1;
+      background: linear-gradient(100deg, #ffffff 10%, var(--blue) 50%, var(--violet) 80%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 22px;
+    }
+
+    .hero p.lead {
+      font-size: 1.15rem;
+      color: var(--text-1);
+      max-width: 520px;
+      line-height: 1.9;
+      margin-bottom: 34px;
+      font-weight: 400;
+    }
+
+    .cta-row {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      border-radius: 14px;
+      font-weight: 700;
+      font-size: .98rem;
+      text-decoration: none;
+      transition: transform .25s, box-shadow .25s;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(120deg, var(--violet), var(--blue));
+      color: #fff;
+      box-shadow: 0 8px 30px -6px rgba(124, 92, 252, .6);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 14px 34px -6px rgba(124, 92, 252, .75);
+    }
+
+    .btn-ghost {
+      color: var(--text-0);
+    }
+
+    .btn-ghost:hover {
+      transform: translateY(-3px);
+    }
+
+    /* countdown ring card */
+    .count-card {
+      padding: 36px 30px;
+      text-align: center;
+    }
+
+    .count-card .cc-label {
+      font-size: .95rem;
+      color: var(--text-1);
+      margin-bottom: 22px;
+      font-weight: 700;
+    }
+
+    .cc-label span {
+      color: var(--pink);
+    }
+
+    .cc-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .cc-unit {
+      padding: 16px 6px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, .03);
+      border: 1px solid var(--glass-bd);
+    }
+
+    .cc-num {
+      font-family: 'Lalezar', cursive;
+      font-size: 2.1rem;
+      background: linear-gradient(160deg, var(--blue), var(--violet));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      display: block;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .cc-unit-label {
+      font-size: .72rem;
+      color: var(--text-2);
+      font-weight: 500;
+    }
+
+    .cc-sub {
+      margin-top: 20px;
+      font-size: .82rem;
+      color: var(--text-2);
+    }
+
+    /* ---------- generic section heading ---------- */
+    .sec-head {
+      text-align: center;
+      max-width: 640px;
+      margin: 0 auto 54px;
+    }
+
+    .sec-eyebrow {
+      font-size: .85rem;
+      font-weight: 700;
+      color: var(--violet);
+      letter-spacing: .5px;
+      margin-bottom: 12px;
+    }
+
+    .sec-title {
+      font-family: 'Lalezar', cursive;
+      font-size: clamp(2rem, 4vw, 2.7rem);
+      margin-bottom: 14px;
+    }
+
+    .sec-title .hl {
+      background: linear-gradient(100deg, var(--blue), var(--pink));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .sec-desc {
+      color: var(--text-1);
+      line-height: 1.9;
+      font-size: 1.02rem;
+    }
+
+    section {
+      padding: 110px 0;
+    }
+
+    /* ---------- about ---------- */
+    .about-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+      margin-top: 10px;
+    }
+
+    @media(max-width:800px) {
+      .about-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .about-card {
+      padding: 30px 26px;
+    }
+
+    .about-card .ic {
+      font-size: 1.8rem;
+      margin-bottom: 16px;
+      display: inline-block;
+    }
+
+    .about-card h3 {
+      font-size: 1.15rem;
+      margin-bottom: 10px;
+      font-weight: 800;
+    }
+
+    .about-card p {
+      color: var(--text-1);
+      font-size: .92rem;
+      line-height: 1.85;
+    }
+
+    .track-note {
+      margin-top: 26px;
+      padding: 18px 24px;
+      border-radius: 16px;
+      font-size: .92rem;
+      color: var(--text-1);
+      line-height: 1.9;
+      border: 1px dashed rgba(255, 255, 255, .16);
+    }
+
+    .track-note b {
+      color: var(--text-0);
+    }
+
+    /* ---------- sanad ---------- */
+    .sanad-wrap {
+      display: grid;
+      grid-template-columns: .85fr 1.15fr;
+      gap: 50px;
+      align-items: center;
+    }
+
+    @media(max-width:900px) {
+      .sanad-wrap {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .chat-mock {
+      padding: 26px;
+    }
+
+    .chat-head {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--glass-bd);
+    }
+
+    .chat-avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--violet), var(--blue));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Lalezar', cursive;
+      font-size: 1.2rem;
+    }
+
+    .chat-name {
+      font-weight: 800;
+    }
+
+    .chat-status {
+      font-size: .75rem;
+      color: var(--text-2);
+    }
+
+    .chat-status::before {
+      content: '';
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #4ade80;
+      margin-left: 5px;
+    }
+
+    .bubble {
+      max-width: 85%;
+      padding: 12px 16px;
+      border-radius: 16px;
+      font-size: .88rem;
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+
+    .bubble.user {
+      background: linear-gradient(120deg, var(--violet), var(--blue));
+      margin-right: auto;
+      border-bottom-left-radius: 4px;
+    }
+
+    .bubble.bot {
+      background: rgba(255, 255, 255, .05);
+      border: 1px solid var(--glass-bd);
+      border-bottom-right-radius: 4px;
+    }
+
+    .sanad-copy h3 {
+      font-family: 'Lalezar', cursive;
+      font-size: 2rem;
+      margin-bottom: 16px;
+    }
+
+    .sanad-copy h3 span {
+      background: linear-gradient(100deg, var(--blue), var(--violet));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .sanad-copy p {
+      color: var(--text-1);
+      line-height: 1.95;
+      font-size: 1rem;
+      margin-bottom: 14px;
+    }
+
+    .sanad-tags {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+
+    .tag {
+      font-size: .78rem;
+      padding: 7px 14px;
+      border-radius: 999px;
+      color: var(--text-1);
+    }
+
+    /* ---------- subjects ---------- */
+    .subjects-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    @media(max-width:900px) {
+      .subjects-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media(max-width:520px) {
+      .subjects-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .subj-card {
+      padding: 34px 22px;
+      text-align: center;
+      transition: transform .3s, border-color .3s;
+      cursor: default;
+    }
+
+    .subj-card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(255, 255, 255, .22);
+    }
+
+    .subj-ic {
+      font-size: 2.4rem;
+      margin-bottom: 18px;
+    }
+
+    .subj-card h4 {
+      font-size: 1.08rem;
+      margin-bottom: 8px;
+      font-weight: 800;
+    }
+
+    .subj-card p {
+      font-size: .8rem;
+      color: var(--text-2);
+    }
+
+    /* ---------- footer ---------- */
+    footer {
+      padding: 70px 0 40px;
+    }
+
+    .foot-glass {
+      padding: 44px 34px;
+      text-align: center;
+    }
+
+    .foot-logo {
+      font-family: 'Lalezar', cursive;
+      font-size: 1.9rem;
+      margin-bottom: 10px;
+      background: linear-gradient(90deg, var(--blue), var(--violet), var(--pink));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .foot-tag {
+      color: var(--text-1);
+      font-size: .92rem;
+      margin-bottom: 30px;
+    }
+
+    .social-row {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 30px;
+    }
+
+    .social-btn {
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-0);
+      text-decoration: none;
+      transition: transform .25s, background .25s;
+    }
+
+    .social-btn:hover {
+      transform: translateY(-4px) scale(1.05);
+      background: rgba(255, 255, 255, .09);
+    }
+
+    .social-btn svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    .foot-email {
+      font-size: .95rem;
+      color: var(--text-1);
+    }
+
+    .foot-email a {
+      color: var(--text-0);
+      text-decoration: none;
+      font-weight: 700;
+      border-bottom: 1px solid rgba(255, 255, 255, .25);
+      padding-bottom: 2px;
+      transition: color .25s, border-color .25s;
+    }
+
+    .foot-email a:hover {
+      color: var(--blue);
+      border-color: var(--blue);
+    }
+
+    .foot-bottom {
+      text-align: center;
+      margin-top: 26px;
+      font-size: .78rem;
+      color: var(--text-2);
+    }
+
+    /* reveal animation */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity .8s ease, transform .8s ease;
+    }
+
+    .reveal.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+      }
+    }
+
+    a:focus-visible,
+    button:focus-visible {
+      outline: 2px solid var(--blue);
+      outline-offset: 3px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="bg-mesh">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
+  <div class="grain"></div>
+
+  <nav>
+    <div class="nav-inner glass">
+      <div class="logo">محلولة</div>
+      <button class="nav-toggle" id="navToggle" aria-label="القائمة">☰</button>
+      <ul class="nav-links glass" id="navLinks">
+        <li><a href="#home">الرئيسية</a></li>
+        <li><a href="#sanad">سند</a></li>
+        <li><a href="#subjects">المواد</a></li>
+        <li><a href="#contact">تواصل</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <header class="hero" id="home">
+    <div class="wrap hero-grid">
+      <div>
+        <span class="eyebrow glass"><span class="dot"></span> توجيهي 2010 · المسار الأكاديمي</span>
+        <h1 class="title">محلولة</h1>
+        <p class="lead">
+          منصة وحدة بتجمعلك ملخصات المواد الوزارية الأربعة، وبتخليك تسأل سند - الذكاء الاصطناعي يلي بجاوب بس من داخل
+          المنهاج الأردني. من غير تشتيت، من غير حشو، بس اللي بيلزمك عشان توصل عالوزاري بثقة.
+        </p>
+        <div class="cta-row">
+          <a href="#sanad" class="btn btn-primary">تعرف على سند</a>
+          <a href="#subjects" class="btn btn-ghost glass">شوف المواد</a>
+        </div>
+      </div>
+
+      <div class="count-card glass reveal">
+        <div class="cc-label">باقي على أول امتحان وزاري <span>⏳</span></div>
+        <div class="cc-grid">
+          <div class="cc-unit"><span class="cc-num" id="cc-days">--</span><span class="cc-unit-label">يوم</span></div>
+          <div class="cc-unit"><span class="cc-num" id="cc-hours">--</span><span class="cc-unit-label">ساعة</span></div>
+          <div class="cc-unit"><span class="cc-num" id="cc-min">--</span><span class="cc-unit-label">دقيقة</span></div>
+          <div class="cc-unit"><span class="cc-num" id="cc-sec">--</span><span class="cc-unit-label">ثانية</span></div>
+        </div>
+        <div class="cc-sub">أول وزاري عادةً بيكون بتاريخ 25/7 — استغل كل يوم منيح 💪</div>
+      </div>
+    </div>
+  </header>
+
+  <section id="about">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div class="sec-eyebrow">شو هو محلولة؟</div>
+        <h2 class="sec-title">موقع سواه طالب... <span class="hl">لطلاب</span></h2>
+        <p class="sec-desc">
+          محلولة موقع بسيط طالب توجيهي سواه عشان يسهّل حياة رفاقه: ملخصات مركزة، وذكاء اصطناعي بيرد بس من الكتب الوزارية
+          - مش من الإنترنت ومش من برا المنهاج.
+        </p>
+      </div>
+
+      <div class="about-grid">
+        <div class="about-card glass reveal">
+          <span class="ic">📚</span>
+          <h3>ملخصات مركزة</h3>
+          <p>خلاصة كل مادة بشكل واضح ومباشر، تركّز فيه على الأفكار اللي فعلاً بتنسأل بالامتحان.</p>
+        </div>
+        <div class="about-card glass reveal">
+          <span class="ic">🤖</span>
+          <h3>سند بجانبك</h3>
+          <p>بتسأل، وسند بيجاوبك بناءً على الكتب الوزارية الأربعة بس - إجابة موثوقة ومن قلب المنهاج.</p>
+        </div>
+        <div class="about-card glass reveal">
+          <span class="ic">🎯</span>
+          <h3>تركيز صف 2010</h3>
+          <p>كل شي هون مبني خصيصًا لطلاب توجيهي 2010، مسار أكاديمي، وبنظام الامتحانات الحالي.</p>
+        </div>
+      </div>
+
+      <div class="track-note reveal">
+        💡 محلولة حاليًا <b>خاص بالمسار الأكاديمي</b> لطلاب توجيهي 2010 فقط. المسار المهني وباقي المسارات الجديدة جايين
+        قريبًا مع تحديثات الموقع بناءً على النظام الجديد.
+      </div>
+    </div>
+  </section>
+
+  <section id="sanad">
+    <div class="wrap sanad-wrap">
+      <div class="chat-mock glass reveal">
+        <div class="chat-head">
+          <div class="chat-avatar">س</div>
+          <div>
+            <div class="chat-name">سند</div>
+            <div class="chat-status">متصل الآن</div>
+          </div>
+        </div>
+        <div class="bubble user">ممكن تشرحلي درس التوابع بالرياضيات باختصار؟</div>
+        <div class="bubble bot">أكيد! التابع هو علاقة بتربط كل عنصر من المجموعة الأولى بعنصر وحيد بس من المجموعة
+          الثانية... 📐</div>
+        <div class="bubble user">هاد من الكتاب الوزاري؟</div>
+        <div class="bubble bot">إيه، كل جواب بطلعلك مبني على الكتب الوزارية الأربعة بس ✅</div>
+      </div>
+
+      <div class="sanad-copy reveal">
+        <h3>مين هو <span>سند؟</span></h3>
+        <p>
+          سند هو الذكاء الاصطناعي الخاص بموقع محلولة. مهمته الوحيدة إنه يجاوبك على أسئلتك من جوّا المنهاج الأردني بس -
+          مش بيخترع ومش بيطلع عن الموضوع.
+        </p>
+        <p>
+          احكيله زي ما بتحكي لصاحبك يلي فاهم المادة، وهو بيرجعلك جواب واضح ومباشر.
+        </p>
+        <div class="sanad-tags">
+          <span class="tag glass">مبني على الكتب الوزارية</span>
+          <span class="tag glass">إجابات داخل المنهاج فقط</span>
+          <span class="tag glass">متاح دايمًا</span>
+        </div>
+        <div class="cta-row" style="margin-top:26px;">
+          <a href="sanad.html" class="btn btn-primary">جرّب سند الحين</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="subjects">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div class="sec-eyebrow">المواد المتوفرة</div>
+        <h2 class="sec-title">أربع مواد، <span class="hl">تركيز كامل</span></h2>
+        <p class="sec-desc">كل مادة إلها ملخصها الخاص، وسند جاهز يجاوبك على أي سؤال فيها.</p>
+      </div>
+
+      <div class="subjects-grid">
+        <div class="subj-card glass reveal">
+          <div class="subj-ic">📖</div>
+          <h4>اللغة العربية</h4>
+          <p>نصوص، قواعد، وتعبير</p>
+        </div>
+        <div class="subj-card glass reveal">
+          <div class="subj-ic">➗</div>
+          <h4>الرياضيات</h4>
+          <p>جبر، هندسة، وتفاضل</p>
+        </div>
+        <div class="subj-card glass reveal">
+          <div class="subj-ic">🏛️</div>
+          <h4>تاريخ الأردن</h4>
+          <p>أحداث وتواريخ مركزة</p>
+        </div>
+        <div class="subj-card glass reveal">
+          <div class="subj-ic">🕌</div>
+          <h4>التربية الإسلامية</h4>
+          <p>فقه، وتفسير، وسيرة</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer id="contact">
+    <div class="wrap">
+      <div class="foot-glass glass reveal">
+        <div class="foot-logo">محلولة</div>
+        <p class="foot-tag">تابعنا لآخر تحديثات الملخصات وسند</p>
+
+        <div class="social-row">
+          <!-- رابط تيليجرام -->
+          <a class="social-btn glass" href="https://t.me/mahloola_tawjihi" target="_blank" rel="noopener noreferrer"
+            aria-label="تيليجرام">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path
+                d="M21.94 4.6a1.4 1.4 0 0 0-1.9-.86L2.7 10.6a1.3 1.3 0 0 0 .1 2.44l4.53 1.4 1.74 5.58c.2.62.98.8 1.44.34l2.53-2.5 4.4 3.27c.7.52 1.7.14 1.88-.72l3.5-15.1a1.4 1.4 0 0 0-.98-1.13ZM9.1 13.9l8.4-6.9c.2-.16.42.1.24.28l-6.9 6.5c-.28.26-.46.6-.5.98l-.2 2.02-1.5-3.4a.8.8 0 0 1 .46-.98Z" />
+            </svg>
+          </a>
+
+          <!-- رابط انستغرام -->
+          <a class="social-btn glass" href="https://www.instagram.com/mahloola.tawjihi" target="_blank"
+            rel="noopener noreferrer" aria-label="انستغرام">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <rect x="3" y="3" width="18" height="18" rx="5" />
+              <circle cx="12" cy="12" r="4" />
+              <circle cx="17.2" cy="6.8" r="1" />
+            </svg>
+          </a>
+        </div>
+
+        <div class="foot-email">
+          راسلنا عبر الإيميل: <a href="mailto:mahloola.tawjihi@gmail.com">mahloola.tawjihi@gmail.com</a>
+        </div>
+      </div>
+
+      <div class="foot-bottom">محلولة © 2026 — بصنع طالب، لطلاب.</div>
+    </div>
+  </footer>
+
+  <script>
+    // mobile nav toggle
+    const navToggle = document.getElementById('navToggle');
+    const navLinks = document.getElementById('navLinks');
+    navToggle.addEventListener('click', () => navLinks.classList.toggle('open'));
+    navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+
+    // countdown to next 25/7
+    function getNextExamDate() {
+      let target = new Date(2027, 6, 25, 0, 0, 0);
+      return target;
+    }
+
+    function updateCountdown() {
+      const target = getNextExamDate();
+      const now = new Date();
+      let diff = target - now;
+      if (diff < 0) diff = 0;
+
+      const day = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hour = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const min = Math.floor((diff / (1000 * 60)) % 60);
+      const sec = Math.floor((diff / 1000) % 60);
+
+      document.getElementById('cc-days').textContent = day;
+      document.getElementById('cc-hours').textContent = String(hour).padStart(2, '0');
+      document.getElementById('cc-min').textContent = String(min).padStart(2, '0');
+      document.getElementById('cc-sec').textContent = String(sec).padStart(2, '0');
+    }
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+
+    // reveal on scroll
+    const revealEls = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('show');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: .15 });
+    revealEls.forEach(el => io.observe(el));
+  </script>
+
+</body>
+
+</html>

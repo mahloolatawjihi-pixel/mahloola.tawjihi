@@ -1,0 +1,29 @@
+{
+  "name": "mahloola",
+  "version": "1.0.0",
+  "description": "",
+  "main": "sanad-data.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mahloolatawjihi-pixel/mahloola.tawjihi.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/mahloolatawjihi-pixel/mahloola.tawjihi/issues"
+  },
+  "homepage": "https://github.com/mahloolatawjihi-pixel/mahloola.tawjihi#readme",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.112.3",
+    "@google/generative-ai": "^0.24.1",
+    "@huggingface/inference": "^4.13.23",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1"
+  }
+}
