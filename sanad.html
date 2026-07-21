@@ -654,6 +654,11 @@
 
       // ندور على الصفحات الأكثر صلة بسؤال الطالب من كتاب المادة الحالية
       const topPages = retrieveContext(currentSubject, text, 4);
+      let isMathQuery = /[\d+\-*/=×÷\(\)]/.test(text) && (text.includes('*') || text.includes('×') || text.includes('+') || text.includes('-') || text.includes('/') || text.includes('=') || text.includes('كم'));
+
+      if (isMathQuery) {
+        topPages.push({ p: "خارج الكتاب", t: `سؤال حسابي أو رياضي: ${text}` });
+      }
 
       if (topPages.length === 0) {
         removeTyping();
