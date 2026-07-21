@@ -1,15 +1,14 @@
 import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
-import { GoogleGenerativeAI } from '@google/generative-ai';
+import { Groq } from 'groq-sdk';
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-// تهيئة Gemini
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-001" });
+// تهيئة Groq باستخدام المفتاح الجديد
+const groq = new Groq({ apiKey: process.env.GEMINI_API_KEY }); // سيبقى اسم المتغير نفسه لسهولة الإعدادات
 
 // مصفوفة لطابور الانتظار لمنع انهيار السيرفر عند الضغط
 const requestQueue = [];
@@ -36,35 +35,26 @@ async function processQueue() {
 مهمتك مساعدة الطالب بمادة: ${subject}.
 القواعد: أجب بلهجة أردنية بسيطة وودودة، بشكل مختصر ومركز، وركز فقط على سؤال الطالب.`;
 
-        const formattedHistory = history
-            .filter(m => m.role === 'user' || m.role === 'assistant')
-            .map(m => ({
-                role: m.role === 'user' ? 'user' : 'model',
-                parts: [{ text: m.content }],
-            }));
+        // تجهيز التاريخ لـ Groq (يتوافق مع نظام OpenAI القياسي)
+        const formattedHistory = [
+            { role: "system", content: systemInstruction },
+            ...history.filter(m => m.role === 'user' || m.role === 'assistant')
+                      .map(m => ({ role: m.role, content: m.content })),
+            { role: "user", content: question }
+        ];
 
-        const validHistory = (formattedHistory.length > 0 && formattedHistory[0].role === 'model')
-            ? formattedHistory.slice(1)
-            : formattedHistory;
-
-        const chat = model.startChat({
-            history: validHistory,
-            generationConfig: {
-                maxOutputTokens: 500,
-                temperature: 0.7,
-            },
+        const completion = await groq.chat.completions.create({
+            messages: formattedHistory,
+            model: "llama-3.3-70b-versatile", // نموذج صاروخي وذكي جداً من Groq
+            temperature: 0.7,
+            max_tokens: 500,
         });
 
-        const finalPrompt = `${systemInstruction}\n\nسؤال الطالب: ${question}`;
-
-        const result = await chat.sendMessage(finalPrompt);
-        const response = await result.response;
-        const reply = response.text() || 'عذرًا، لم أستطع الرد الآن.';
-
+        const reply = completion.choices[0]?.message?.content || 'عذرًا، لم أستطع الرد الآن.';
         res.json({ reply });
 
     } catch (error) {
-        console.error('خطأ في الاتصال بـ Gemini:', error);
+        console.error('خطأ في الاتصال بـ Groq:', error);
         res.status(500).json({ reply: 'عذرًا، واجهت ضغطاً على السيرفر، جاري المحاولة...' });
     } finally {
         isProcessing = false;
@@ -73,11 +63,10 @@ async function processQueue() {
 }
 
 app.get('/', (req, res) => {
-    res.send('سيرفر سند (Gemini) شغال ✅');
+    res.send('سيرفر سند (Groq) شغال ✅');
 });
 
 app.post('/api/chat', (req, res) => {
-    // إضافة الطلب إلى الطابور بدلاً من معالجته فوراً بشكل عشوائي
     requestQueue.push({ req, res });
     processQueue();
 });
