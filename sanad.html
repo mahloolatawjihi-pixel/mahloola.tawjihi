@@ -514,8 +514,14 @@
 
     const STOP = new Set(["من", "في", "على", "الى", "إلى", "عن", "كيف", "ما", "ماذا", "هل", "انا", "أنا", "هذا", "هذه", "هذي", "التي", "الذي", "و", "او", "أو", "ثم", "كان", "يكون", "ايش", "اش", "لو", "بس", "يا", "مش", "انت", "إنت", "ليش", "كم", "اي", "أي", "لماذا"]);
 
+    function stripAl(w) {
+      return (w.startsWith('ال') && w.length > 4) ? w.slice(2) : w;
+    }
+
     function tokenize(s) {
-      return normalizeArabic(s).split(' ').filter(w => w.length >= 2 && !STOP.has(w));
+      return normalizeArabic(s).split(' ')
+        .filter(w => w.length >= 2 && !STOP.has(w))
+        .map(stripAl);
     }
 
     function getNormPages(subject) {
@@ -526,7 +532,7 @@
     }
 
     function retrieveContext(subject, query, k) {
-      k = k || 6;
+      k = k || 9;
       const pages = getNormPages(subject);
       const qTokens = tokenize(query);
       if (qTokens.length === 0) return [];
@@ -534,7 +540,11 @@
       for (const pg of pages) {
         let score = 0;
         for (const t of qTokens) {
-          if (pg.norm.includes(t)) score++;
+          if (pg.norm.includes(t)) {
+            score += t.length >= 4 ? 2 : 1; // كلمات أطول = تطابق أقوى وأدق
+          } else if (t.length >= 5 && pg.norm.includes(t.slice(0, Math.ceil(t.length * 0.7)))) {
+            score += 1; // تطابق جزئي (جذر الكلمة) يلحق تصريفات مختلفة لنفس الكلمة
+          }
         }
         if (score > 0) scored.push({ p: pg.p, t: pg.t, score });
       }
@@ -619,7 +629,7 @@
       addTyping();
 
       // ندور على الصفحات الأكثر صلة بسؤال الطالب من كتاب المادة الحالية
-      const topPages = retrieveContext(currentSubject, text, 6);
+      const topPages = retrieveContext(currentSubject, text, 9);
 
       if (topPages.length === 0) {
         removeTyping();
