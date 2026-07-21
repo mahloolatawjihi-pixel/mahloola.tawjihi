@@ -2,10 +2,18 @@ import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import { Groq } from 'groq-sdk';
+import rateLimit from 'express-rate-limit'; // 1. استيراد حزمة الحماية
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+// 2. إعداد حدود الطلبات (أقصى حد 20 طلب لكل دقيقة لكل آيبيه لحماية الرصيد)
+const chatLimiter = rateLimit({
+    windowMs: 60 * 1000, // دقيقة وحدة
+    max: 20, 
+    message: { reply: "طلبات كثيرة جداً، يرجى المحاولة بعد قليل ⏳" }
+});
 
 // تهيئة Groq باستخدام المفتاح
 const groq = new Groq({ apiKey: process.env.GEMINI_API_KEY }); // اسم المتغير قديم بس القيمة مفتاح Groq
@@ -16,7 +24,8 @@ app.get('/', (req, res) => {
     res.send('سيرفر سند (Groq) شغال ✅');
 });
 
-app.post('/api/chat', async (req, res) => {
+// 3. إضافة chatLimiter هنا كمتوسط حماية لمسار الـ API
+app.post('/api/chat', chatLimiter, async (req, res) => {
     const { question, subject, history = [], context = '' } = req.body;
 
     if (!question || !subject) {
@@ -55,7 +64,7 @@ ${context}
 
         const completion = await groq.chat.completions.create({
             messages: formattedHistory,
-            model: "openai/gpt-oss-120b", // llama-3.3-70b-versatile انسحب من Groq بشهر 6/2026، هاد البديل الرسمي المقترح منهم
+            model: "openai/gpt-oss-120b", 
             temperature: 0.4,
             max_tokens: 500,
         });

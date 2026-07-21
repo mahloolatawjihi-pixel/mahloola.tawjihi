@@ -305,6 +305,20 @@
       border-color: rgba(255, 107, 157, .35);
     }
 
+    .source-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      margin-top: 8px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(124, 92, 252, 0.12);
+      border: 1px solid rgba(124, 92, 252, 0.3);
+      color: var(--text-0);
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
     .typing {
       display: flex;
       gap: 5px;
@@ -564,13 +578,23 @@
     const sendBtn = document.getElementById('sendBtn');
     const tabsEl = document.getElementById('subjectTabs');
 
-    function addBubble(role, text, extraClass) {
+    function addBubble(role, text, extraClass, sourcePage) {
       const row = document.createElement('div');
       row.className = 'msg-row ' + (role === 'user' ? 'user' : 'bot');
       const bubble = document.createElement('div');
       bubble.className = 'bubble ' + (role === 'user' ? 'user' : 'bot') + (extraClass ? ' ' + extraClass : '');
       bubble.textContent = text;
+
       row.appendChild(bubble);
+
+      // إذا رد من البوت ومعاه رقم صفحة، بنضيف شارة المصدر تحت الجواب
+      if (role === 'bot' && sourcePage) {
+        const sourceBadge = document.createElement('div');
+        sourceBadge.className = 'source-badge';
+        sourceBadge.innerHTML = `<span>📖 مصدر الوزارة: صفحة ${sourcePage}</span>`;
+        bubble.appendChild(sourceBadge);
+      }
+
       messagesEl.appendChild(row);
       messagesEl.scrollTop = messagesEl.scrollHeight;
       return row;
@@ -658,7 +682,11 @@
         const data = await response.json();
         removeTyping();
         const isApology = (data.reply || '').includes('عذرًا، ما بقدر أجاوبك');
-        addBubble('bot', data.reply, isApology ? 'apology' : '');
+
+        // جلب رقم أول صفحة كمصدر للجواب
+        const sourcePage = (topPages.length > 0 && !isApology) ? topPages[0].p : null;
+
+        addBubble('bot', data.reply, isApology ? 'apology' : '', sourcePage);
         history.push({ role: 'assistant', content: data.reply });
 
       } catch (error) {
@@ -683,4 +711,5 @@
   </script>
 
 </body>
+
 </html>
