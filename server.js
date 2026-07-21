@@ -48,7 +48,7 @@ ${context}
         const formattedHistory = [
             { role: "system", content: systemInstruction },
             ...history.filter(m => m.role === 'user' || m.role === 'assistant')
-                .slice(-8)
+                .slice(-3)
                 .map(m => ({ role: m.role, content: m.content })),
             { role: "user", content: question }
         ];
