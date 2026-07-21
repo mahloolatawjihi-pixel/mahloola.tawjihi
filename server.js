@@ -10,15 +10,25 @@ app.use(express.json());
 // تهيئة Gemini
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-001" });
-app.get('/', (req, res) => {
-    res.send('سيرفر سند (Gemini) شغال ✅');
-});
 
-app.post('/api/chat', async (req, res) => {
+// مصفوفة لطابور الانتظار لمنع انهيار السيرفر عند الضغط
+const requestQueue = [];
+let isProcessing = false;
+
+// دالة معالجة الطلبات بالترتيب (Queue)
+async function processQueue() {
+    if (isProcessing || requestQueue.length === 0) return;
+    
+    isProcessing = true;
+    const { req, res } = requestQueue.shift();
+
     const { question, subject, history = [] } = req.body;
 
     if (!question || !subject) {
-        return res.status(400).json({ reply: 'ناقص سؤال أو اسم مادة بالطلب.' });
+        res.status(400).json({ reply: 'ناقص سؤال أو اسم مادة بالطلب.' });
+        isProcessing = false;
+        processQueue();
+        return;
     }
 
     try {
@@ -26,7 +36,6 @@ app.post('/api/chat', async (req, res) => {
 مهمتك مساعدة الطالب بمادة: ${subject}.
 القواعد: أجب بلهجة أردنية بسيطة وودودة، بشكل مختصر ومركز، وركز فقط على سؤال الطالب.`;
 
-        // تنظيف وتجهيز التاريخ لـ Gemini
         const formattedHistory = history
             .filter(m => m.role === 'user' || m.role === 'assistant')
             .map(m => ({
@@ -34,7 +43,6 @@ app.post('/api/chat', async (req, res) => {
                 parts: [{ text: m.content }],
             }));
 
-        // التأكد من أن التاريخ لا يبدأ برسالة من الموديل (شرط Gemini)
         const validHistory = (formattedHistory.length > 0 && formattedHistory[0].role === 'model')
             ? formattedHistory.slice(1)
             : formattedHistory;
@@ -47,7 +55,6 @@ app.post('/api/chat', async (req, res) => {
             },
         });
 
-        // دمج التعليمات مع السؤال الأول (أو إرساله عبر التعليمات)
         const finalPrompt = `${systemInstruction}\n\nسؤال الطالب: ${question}`;
 
         const result = await chat.sendMessage(finalPrompt);
@@ -58,8 +65,21 @@ app.post('/api/chat', async (req, res) => {
 
     } catch (error) {
         console.error('خطأ في الاتصال بـ Gemini:', error);
-        res.status(500).json({ reply: 'عذرًا، واجهت مشكلة في الاتصال بالسيرفر، حاول مرة ثانية 🙏' });
+        res.status(500).json({ reply: 'عذرًا، واجهت ضغطاً على السيرفر، جاري المحاولة...' });
+    } finally {
+        isProcessing = false;
+        processQueue(); // الانتقال للطلب التالي في الطابور
     }
+}
+
+app.get('/', (req, res) => {
+    res.send('سيرفر سند (Gemini) شغال ✅');
+});
+
+app.post('/api/chat', (req, res) => {
+    // إضافة الطلب إلى الطابور بدلاً من معالجته فوراً بشكل عشوائي
+    requestQueue.push({ req, res });
+    processQueue();
 });
 
 const PORT = process.env.PORT || 3000;
