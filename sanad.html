@@ -824,8 +824,8 @@ const SANAD_BOOKS = {"رياضيات":[{"p":1,"t":"‫اﻟــﻤــﺮﻛــ
       addTyping();
 
       // ندور على الصفحات الأكثر صلة بسؤال الطالب من كتاب المادة الحالية
-      const topPages = retrieveContext(currentSubject, text, 4);
-      let isMathQuery = /[\d+\-*/=×÷\(\)]/.test(text) && (text.includes('*') || text.includes('×') || text.includes('+') || text.includes('-') || text.includes('/') || text.includes('=') || text.includes('كم'));
+      const topPages = retrieveContext(currentSubject, text, 7);
+      let isMathQuery = /[\d+\-*/=×÷\(\)]/.test(text) && (text.includes('*') || text.includes('×') || text.includes('+') || text.includes('-') || text.includes('/') || text.includes('=') || text.includes('كم') || text.includes('احسب') || text.includes('ناتج') || text.includes('قيمة'));
 
       if (isMathQuery) {
         topPages.push({ p: "خارج الكتاب", t: `سؤال حسابي أو رياضي: ${text}` });
